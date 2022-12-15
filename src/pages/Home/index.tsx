@@ -1,6 +1,7 @@
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import illustrationImage from '../../assets/illustration.svg'
 import { Header } from '../../components/Header'
+import { ListCoffees } from './components/ListCoffees'
 import { HeroContainer, HomeContainer, Icon, ItemsContainer } from './styles'
 
 export function Home() {
@@ -46,6 +47,8 @@ export function Home() {
         </div>
         <img src={illustrationImage} alt="Copo de café com cereais ao lado" />
       </HeroContainer>
+
+      <ListCoffees />
     </HomeContainer>
   )
 }

@@ -19,6 +19,9 @@ body, input, button {
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
 }
+button {
+  cursor: pointer;
+}
 
 body {
   background: ${(props) => props.theme.background};
