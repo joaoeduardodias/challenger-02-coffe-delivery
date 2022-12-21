@@ -67,7 +67,7 @@ export function Coffee({
               <Plus size={14} weight="fill" />
             </button>
           </QuantityCoffee>
-          <AddCoffeeToCart>
+          <AddCoffeeToCart aria-label="Adicionar ao carrinho">
             <ShoppingCartSimple size={22} weight="fill" />
           </AddCoffeeToCart>
         </div>
