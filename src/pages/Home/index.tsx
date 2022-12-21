@@ -1,14 +1,11 @@
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import illustrationImage from '../../assets/illustration.svg'
-import { Header } from '../../components/Header'
 import { ListCoffees } from './components/ListCoffees'
 import { HeroContainer, HomeContainer, Icon, ItemsContainer } from './styles'
 
 export function Home() {
   return (
     <HomeContainer>
-      <Header />
-
       <HeroContainer>
         <div>
           <h1>Encontre o café perfeito para qualquer hora do dia</h1>
