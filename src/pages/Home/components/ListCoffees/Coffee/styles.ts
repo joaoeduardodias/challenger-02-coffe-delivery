@@ -78,7 +78,6 @@ export const CardFooter = styled.div`
 export const QuantityCoffee = styled.div`
   background-color: ${(props) => props.theme['base-button']};
   border-radius: 6px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -92,7 +91,7 @@ export const QuantityCoffee = styled.div`
     align-items: center;
     justify-content: center;
     color: ${(props) => props.theme.purple};
-    transition: 0.5ms;
+    transition: 0.2s;
     height: 100%;
     background: transparent;
     &:hover {
@@ -109,7 +108,7 @@ export const AddCoffeeToCart = styled.button`
   border: none;
   border-radius: 6px;
   background: ${(props) => props.theme['purple-dark']};
-  transition: background 0.5ms;
+  transition: 0.2s;
 
   &:hover {
     background: ${(props) => props.theme.purple};

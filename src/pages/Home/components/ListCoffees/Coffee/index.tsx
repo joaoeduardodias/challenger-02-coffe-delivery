@@ -10,31 +10,45 @@ import {
   TagsContainer,
   Title,
 } from './styles'
-export function Coffee() {
-  const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
 
-  const typeCoffee = 'Expresso' // alter variable
+interface CoffeeProps {
+  id: number
+  tags: string[]
+  name: string
+  description: string
+  photo: string
+  price: number
+}
+
+export function Coffee({
+  description,
+  name,
+  photo,
+  price,
+  tags,
+  id,
+}: CoffeeProps) {
+  const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
 
   function handleAlterQuantityCoffee(action: 'remove' | 'add') {
     if (action === 'remove') {
-      setQuantityCoffee((state) => quantityCoffee - 1)
+      setQuantityCoffee((state) => state - 1)
     }
     if (action === 'add') {
-      setQuantityCoffee((state) => quantityCoffee + 1)
+      setQuantityCoffee((state) => state + 1)
     }
   }
 
   return (
     <CoffeeContainer>
-      <img src={`src/assets/Type=${typeCoffee}.png`} />
+      <img src={`/coffees/${photo}`} />
       <TagsContainer>
-        <Tag>tradicional</Tag>
-        <Tag>árabe</Tag>
+        {tags.map((tag) => (
+          <Tag key={`${id}-${tag}`}>{tag}</Tag>
+        ))}
       </TagsContainer>
-      <Title>Expresso Tradicional</Title>
-      <Description>
-        O tradicional café feito com água quente e grãos moídos
-      </Description>
+      <Title>{name}</Title>
+      <Description>{description}</Description>
 
       <CardFooter>
         <strong>
@@ -42,7 +56,10 @@ export function Coffee() {
         </strong>
         <div>
           <QuantityCoffee>
-            <button onClick={(e) => handleAlterQuantityCoffee('remove')}>
+            <button
+              disabled={quantityCoffee <= 1}
+              onClick={(e) => handleAlterQuantityCoffee('remove')}
+            >
               <Minus size={14} weight="fill" />
             </button>
             <span>{quantityCoffee}</span>
