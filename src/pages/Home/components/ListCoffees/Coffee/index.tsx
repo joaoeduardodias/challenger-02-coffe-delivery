@@ -1,12 +1,12 @@
-import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { ShoppingCartSimple } from 'phosphor-react'
 import { useState } from 'react'
+import { QuantityCoffee } from '../../../../../components/QuantityCoffee'
 import { formatterPrice } from '../../../../../utils/formattedPrice'
 import {
   AddCoffeeToCart,
   CardFooter,
   CoffeeContainer,
   Description,
-  QuantityCoffee,
   Tag,
   TagsContainer,
   Title,
@@ -56,18 +56,11 @@ export function Coffee({
           <span>R$</span> {formatterPrice(price)}
         </strong>
         <div>
-          <QuantityCoffee>
-            <button
-              disabled={quantityCoffee <= 1}
-              onClick={(e) => handleAlterQuantityCoffee('remove')}
-            >
-              <Minus size={14} weight="fill" />
-            </button>
-            <span>{quantityCoffee}</span>
-            <button onClick={(e) => handleAlterQuantityCoffee('add')}>
-              <Plus size={14} weight="fill" />
-            </button>
-          </QuantityCoffee>
+          <QuantityCoffee
+            quantity={quantityCoffee}
+            onChangeQuantity={handleAlterQuantityCoffee}
+          />
+
           <AddCoffeeToCart aria-label="Adicionar ao carrinho">
             <ShoppingCartSimple size={22} weight="fill" />
           </AddCoffeeToCart>
