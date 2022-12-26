@@ -8,75 +8,72 @@ import {
   Plus,
   Trash,
 } from 'phosphor-react'
-import { CheckoutContainer } from './styles'
+import { useState } from 'react'
+import { useTheme } from 'styled-components'
+import { FormAddress } from './components/FormAddress'
+import { SectionTitle } from './components/SectionTitle'
+import {
+  Address,
+  ButtonMethodPayment,
+  CheckoutContainer,
+  MethodPayment,
+  Payment,
+  SectionBase,
+} from './styles'
 
 export function Checkout() {
+  const theme = useTheme()
+  const [methodPaymentSelected, setMethodPaymentSelected] = useState<string>('')
+
+  function handleSelectMethodPayment(method: 'CREDIT' | 'DEBIT' | 'MONEY') {
+    setMethodPaymentSelected(method)
+  }
+
   return (
     <CheckoutContainer>
-      <div>
+      <SectionBase>
         <strong>Complete seu pedido</strong>
-        <div>
-          <div>
-            <MapPinLine size={22} />
-            <p>Endereço de Entrega</p>
-            <span>Informe o endereço onde deseja receber seu pedido</span>
-          </div>
-          <form action="">
-            <input
-              type="text"
-              name="zip_code"
-              id="zip_code"
-              placeholder="CEP"
-            />
-            <input type="text" name="street" id="street" placeholder="Rua" />
-            <input
-              type="number"
-              name="number"
-              id="number"
-              placeholder="Número"
-            />
-            <input
-              type="text"
-              name="complement"
-              id="complement"
-              placeholder="Complemento"
-            />
-            <input
-              type="text"
-              name="district"
-              id="district"
-              placeholder="Bairro"
-            />
-            <input type="text" name="city" id="city" placeholder="Cidade" />
-            <input type="text" name="state" id="state" placeholder="UF" />
-          </form>
-        </div>
-        <div>
-          <div>
-            <CurrencyDollar size={22} />
-            <p>Pagamento</p>
-            <span>
-              O pagamento é feito na entrega. Escolha a forma que deseja pagar
-            </span>
+        <Address>
+          <SectionTitle
+            title="Endereço de Entrega"
+            subtitle="Informe o endereço onde deseja receber seu pedido"
+            icon={<MapPinLine color={theme['yellow-dark']} size={22} />}
+          />
+          <FormAddress />
+        </Address>
+        <Payment>
+          <SectionTitle
+            icon={<CurrencyDollar size={22} color={theme.purple} />}
+            title="Pagamento"
+            subtitle="O pagamento é feito na entrega. Escolha a forma que deseja pagar"
+          />
 
-            <div>
-              <button>
-                <CreditCard size={16} />
-                Cartão de crédito
-              </button>
-              <button>
-                <Bank size={16} />
-                cartão de débito
-              </button>
-              <button>
-                <Money size={16} />
-                dinheiro
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
+          <MethodPayment>
+            <ButtonMethodPayment
+              onClick={(e) => handleSelectMethodPayment('CREDIT')}
+              isSelected={methodPaymentSelected === 'CREDIT'}
+            >
+              <CreditCard size={16} />
+              Cartão de crédito
+            </ButtonMethodPayment>
+            <ButtonMethodPayment
+              onClick={(e) => handleSelectMethodPayment('DEBIT')}
+              isSelected={methodPaymentSelected === 'DEBIT'}
+            >
+              <Bank size={16} />
+              cartão de débito
+            </ButtonMethodPayment>
+            <ButtonMethodPayment
+              onClick={(e) => handleSelectMethodPayment('MONEY')}
+              isSelected={methodPaymentSelected === 'MONEY'}
+            >
+              <Money size={16} />
+              dinheiro
+            </ButtonMethodPayment>
+          </MethodPayment>
+        </Payment>
+      </SectionBase>
+      <SectionBase>
         <strong>Cafeś selecionados</strong>
         <div>
           <div>
@@ -138,7 +135,7 @@ export function Checkout() {
             </div>
           </div>
         </div>
-      </div>
+      </SectionBase>
     </CheckoutContainer>
   )
 }
