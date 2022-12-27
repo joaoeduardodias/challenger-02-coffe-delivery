@@ -37,4 +37,27 @@ export const Cart = styled.button`
   padding: 8px;
   border: 0;
   border-radius: 8px;
+
+  position: relative;
+
+  &::after {
+    content: '1';
+    position: absolute;
+    min-width: 1.25rem;
+    min-height: 1.25rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: ${(props) => props.theme['yellow-dark']};
+    color: ${(props) => props.theme.white};
+    border-radius: 50%;
+
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
 `
