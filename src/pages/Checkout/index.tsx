@@ -3,19 +3,23 @@ import {
   CreditCard,
   CurrencyDollar,
   MapPinLine,
-  Minus,
   Money,
-  Plus,
   Trash,
 } from 'phosphor-react'
 import { useState } from 'react'
 import { useTheme } from 'styled-components'
+import { QuantityCoffee } from '../../components/QuantityCoffee'
 import { FormAddress } from './components/FormAddress'
 import { SectionTitle } from './components/SectionTitle'
 import {
   Address,
   ButtonMethodPayment,
+  CardValues,
+  CartContainer,
   CheckoutContainer,
+  CoffeeCart,
+  Divider,
+  ListCoffeesInCart,
   MethodPayment,
   Payment,
   SectionBase,
@@ -23,10 +27,21 @@ import {
 
 export function Checkout() {
   const theme = useTheme()
+  const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
+
   const [methodPaymentSelected, setMethodPaymentSelected] = useState<string>('')
 
   function handleSelectMethodPayment(method: 'CREDIT' | 'DEBIT' | 'MONEY') {
     setMethodPaymentSelected(method)
+  }
+
+  function handleAlterQuantityCoffee(action: 'remove' | 'add') {
+    if (action === 'remove') {
+      setQuantityCoffee((state) => state - 1)
+    }
+    if (action === 'add') {
+      setQuantityCoffee((state) => state + 1)
+    }
   }
 
   return (
@@ -75,66 +90,44 @@ export function Checkout() {
       </SectionBase>
       <SectionBase>
         <strong>Cafeś selecionados</strong>
-        <div>
-          <div>
-            <div>
+        <CartContainer>
+          <ListCoffeesInCart>
+            <CoffeeCart>
               <img src="/coffees/americano.png" />
+
+              <h4>expresso tradicional</h4>
+
               <div>
-                <p>Expresso Tradicional</p>
-                <strong>R$ 9,90</strong>
-                <div>
-                  <div>
-                    <button>
-                      <Minus size={14} />
-                    </button>
-                    <span>1</span>
-                    <button>
-                      <Plus size={14} />
-                    </button>
-                  </div>
-                  <button>
-                    <Trash size={16} />
-                    remover
-                  </button>
-                </div>
+                <QuantityCoffee
+                  onChangeQuantity={handleAlterQuantityCoffee}
+                  quantity={quantityCoffee}
+                />
+                <button>
+                  <Trash size={16} />
+                  remover
+                </button>
               </div>
+
+              <strong>
+                <span>R$</span> 9,90
+              </strong>
+            </CoffeeCart>
+            <Divider />
+          </ListCoffeesInCart>
+
+          <CardValues>
+            <div>
+              <p>Total de itens</p> <span>R$ 29,70</span>
             </div>
             <div>
-              <img src="/coffees/latte.png" />
-              <div>
-                <p>Latte</p>
-                <strong>R$ 19,80</strong>
-                <div>
-                  <div>
-                    <button>
-                      <Minus size={14} />
-                    </button>
-                    <span>1</span>
-                    <button>
-                      <Plus size={14} />
-                    </button>
-                  </div>
-                  <button>
-                    <Trash size={16} />
-                    remover
-                  </button>
-                </div>
-              </div>
+              <p>Entrega</p> <span>R$ 3,50</span>
             </div>
             <div>
-              <div>
-                <p>Total de itens</p> <span>R$ 29,70</span>
-              </div>
-              <div>
-                <p>Entrega</p> <span>R$ 3,50</span>
-              </div>
-              <div>
-                <strong>Total</strong> <strong>R$ 33,20</strong>
-              </div>
-              <button>Confirmar pedido </button>
+              <strong>Total</strong> <strong>R$ 33,20</strong>
             </div>
-          </div>
-        </div>
+            <button>Confirmar pedido </button>
+          </CardValues>
+        </CartContainer>
       </SectionBase>
     </CheckoutContainer>
   )
