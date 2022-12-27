@@ -152,7 +152,6 @@ export const CoffeeCart = styled.li`
       padding: 0 0.5rem;
       gap: 0.25rem;
       background: ${(props) => props.theme['base-button']};
-
       font-size: 0.75rem;
       font-weight: 400;
       color: ${(props) => props.theme['base-text']};
