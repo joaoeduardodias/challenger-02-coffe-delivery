@@ -1,6 +1,10 @@
 import { ShoppingCartSimple } from 'phosphor-react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { QuantityCoffee } from '../../../../../components/QuantityCoffee'
+import {
+  CoffeeInTheCart,
+  CoffeesContext,
+} from '../../../../../contexts/CoffeesContext'
 import { formatterPrice } from '../../../../../utils/formattedPrice'
 import {
   AddCoffeeToCart,
@@ -31,13 +35,28 @@ export function Coffee({
 }: CoffeeProps) {
   const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
 
+  const { addCoffeeInTheCart, removeCoffeeInTheCart } =
+    useContext(CoffeesContext)
+
   function handleAlterQuantityCoffee(action: 'remove' | 'add') {
     if (action === 'remove') {
       setQuantityCoffee((state) => state - 1)
-    }
-    if (action === 'add') {
+    } else {
       setQuantityCoffee((state) => state + 1)
     }
+  }
+  function handleAddCoffeeToCart() {
+    const coffee: CoffeeInTheCart = {
+      id,
+      description,
+      name,
+      photo,
+      price,
+      tags,
+      quantityOfCoffee: quantityCoffee,
+    }
+
+    addCoffeeInTheCart(coffee)
   }
 
   return (
@@ -61,10 +80,16 @@ export function Coffee({
             onChangeQuantity={handleAlterQuantityCoffee}
           />
 
-          <AddCoffeeToCart aria-label="Adicionar ao carrinho">
+          <AddCoffeeToCart
+            aria-label="Adicionar ao carrinho"
+            onClick={handleAddCoffeeToCart}
+          >
             <ShoppingCartSimple size={22} weight="fill" />
           </AddCoffeeToCart>
         </div>
+        <button onClick={() => removeCoffeeInTheCart(id)}>
+          tirar do carrinho
+        </button>
       </CardFooter>
     </CoffeeContainer>
   )

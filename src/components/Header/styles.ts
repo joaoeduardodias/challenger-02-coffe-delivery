@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface CountCoffeesInCart {
+  total: number
+}
+
 export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
@@ -26,7 +30,7 @@ export const Location = styled.div`
   color: ${(props) => props.theme['purple-dark']};
 `
 
-export const Cart = styled.button`
+export const Cart = styled.button<CountCoffeesInCart>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,9 +45,9 @@ export const Cart = styled.button`
   position: relative;
 
   &::after {
-    content: '1';
+    content: '${(props) => props.total}';
     position: absolute;
-    min-width: 1.25rem;
+    min-width: 1.2rem;
     min-height: 1.25rem;
 
     display: flex;

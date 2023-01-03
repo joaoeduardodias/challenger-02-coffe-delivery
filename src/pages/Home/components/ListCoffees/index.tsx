@@ -1,8 +1,11 @@
-import { coffees } from '../../../../data/coffees'
+import { useContext } from 'react'
+import { CoffeesContext } from '../../../../contexts/CoffeesContext'
 import { Coffee } from './Coffee'
 import { List, ListCoffeesContainer } from './styles'
 
 export function ListCoffees() {
+  const { coffees } = useContext(CoffeesContext)
+
   return (
     <ListCoffeesContainer>
       <h3>Nossos cafés</h3>
