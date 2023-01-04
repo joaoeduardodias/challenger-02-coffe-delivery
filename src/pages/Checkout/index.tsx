@@ -4,11 +4,12 @@ import {
   CurrencyDollar,
   MapPinLine,
   Money,
-  Trash,
 } from 'phosphor-react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useTheme } from 'styled-components'
-import { QuantityCoffee } from '../../components/QuantityCoffee'
+import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { formatterPrice } from '../../utils/formattedPrice'
+import { CoffeeCart } from './components/CoffeeCart'
 import { FormAddress } from './components/FormAddress'
 import { SectionTitle } from './components/SectionTitle'
 import {
@@ -17,8 +18,6 @@ import {
   CardValues,
   CartContainer,
   CheckoutContainer,
-  CoffeeCart,
-  Divider,
   ListCoffeesInCart,
   MethodPayment,
   Payment,
@@ -26,22 +25,16 @@ import {
 } from './styles'
 
 export function Checkout() {
-  const theme = useTheme()
-  const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
+  const { coffeesInCart, sumPriceTotal } = useContext(CoffeesContext)
 
+  const theme = useTheme()
+  const priceTotalCoffee = sumPriceTotal()
+  const deliveryPrice = 5.5
+  const totalPrice = priceTotalCoffee + deliveryPrice
   const [methodPaymentSelected, setMethodPaymentSelected] = useState<string>('')
 
   function handleSelectMethodPayment(method: 'CREDIT' | 'DEBIT' | 'MONEY') {
     setMethodPaymentSelected(method)
-  }
-
-  function handleAlterQuantityCoffee(action: 'remove' | 'add') {
-    if (action === 'remove') {
-      setQuantityCoffee((state) => state - 1)
-    }
-    if (action === 'add') {
-      setQuantityCoffee((state) => state + 1)
-    }
   }
 
   return (
@@ -92,38 +85,23 @@ export function Checkout() {
         <strong>Cafeś selecionados</strong>
         <CartContainer>
           <ListCoffeesInCart>
-            <CoffeeCart>
-              <img src="/coffees/americano.png" />
-
-              <h4>expresso tradicional</h4>
-
-              <div>
-                <QuantityCoffee
-                  onChangeQuantity={handleAlterQuantityCoffee}
-                  quantity={quantityCoffee}
-                />
-                <button>
-                  <Trash size={16} />
-                  remover
-                </button>
-              </div>
-
-              <strong>
-                <span>R$</span> 9,90
-              </strong>
-            </CoffeeCart>
-            <Divider />
+            {coffeesInCart.map((coffee) => (
+              <CoffeeCart key={coffee.id} {...coffee} />
+            ))}
           </ListCoffeesInCart>
 
           <CardValues>
             <div>
-              <p>Total de itens</p> <span>R$ 29,70</span>
+              <p>Total de itens</p>
+              <span>R${` ${formatterPrice(priceTotalCoffee)}`}</span>
             </div>
             <div>
-              <p>Entrega</p> <span>R$ 3,50</span>
+              <p>Entrega</p>
+              <span>R${` ${formatterPrice(deliveryPrice)}`}</span>
             </div>
             <div>
-              <strong>Total</strong> <strong>R$ 33,20</strong>
+              <strong>Total</strong>
+              <strong>R${` ${formatterPrice(totalPrice)}`}</strong>
             </div>
             <button>Confirmar pedido </button>
           </CardValues>

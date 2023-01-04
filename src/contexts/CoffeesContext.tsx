@@ -10,15 +10,17 @@ interface Coffee {
   price: number
 }
 export interface CoffeeInTheCart extends Coffee {
-  quantityOfCoffee: number
+  quantity: number
 }
 
 interface CoffeesContextType {
   coffees: Coffee[]
+  coffeesInCart: CoffeeInTheCart[]
   counterCoffeesInCart: () => number
-  addCoffeeInTheCart: (data: CoffeeInTheCart) => void
-  removeCoffeeInTheCart: (id: number) => void
-  alterQuantityOfCoffee: (id: number, quantity: number) => void
+  addCoffeeInCart: (data: CoffeeInTheCart) => void
+  removeCoffeeInCart: (id: number) => void
+  changeQuantityCoffee: (id: number, type: 'increase' | 'decrease') => void
+  sumPriceTotal: () => number
 }
 
 interface CoffeesContextProviderProps {
@@ -31,9 +33,7 @@ export function CoffeesContextProvider({
   children,
 }: CoffeesContextProviderProps) {
   const [coffees, setCoffees] = useState<Coffee[]>([])
-  const [coffeesInTheCart, setCoffeesInTheCart] = useState<CoffeeInTheCart[]>(
-    [],
-  )
+  const [coffeesInCart, setCoffeesInCart] = useState<CoffeeInTheCart[]>([])
 
   useEffect(() => {
     async function Coffees() {
@@ -44,73 +44,84 @@ export function CoffeesContextProvider({
   }, [])
 
   useEffect(() => {
-    const stateJSON = JSON.stringify(coffeesInTheCart)
+    const stateJSON = JSON.stringify(coffeesInCart)
     localStorage.setItem('coffeesDelivery:coffees-cart-1.0.0', stateJSON)
-  }, [coffeesInTheCart])
+  }, [coffeesInCart])
 
-  function addCoffeeInTheCart(coffee: CoffeeInTheCart) {
-    const verifyCoffeeAlreadyExistsInCart = coffeesInTheCart.find(
+  function addCoffeeInCart(coffee: CoffeeInTheCart) {
+    const verifyCoffeeAlreadyExistsInCart = coffeesInCart.find(
       (item) => item.id === coffee.id,
     )
 
     if (verifyCoffeeAlreadyExistsInCart) {
-      const updatedQuantityCoffee = coffeesInTheCart.map((item) => {
-        if (item.id === coffee.id) {
-          return { ...coffee, quantityOfCoffee: item.quantityOfCoffee + 1 }
-        } else {
-          return coffee
-        }
-      })
-      setCoffeesInTheCart(updatedQuantityCoffee)
-    } else {
-      setCoffeesInTheCart((state) => [...state, coffee])
+      alert('Produto já está no carrinho!')
+      return
     }
+    setCoffeesInCart((state) => [...state, coffee])
   }
 
-  function removeCoffeeInTheCart(id: number) {
-    const coffeeExist = coffeesInTheCart.find((coffee) => coffee.id === id)
+  function removeCoffeeInCart(id: number) {
+    const coffeeExist = coffeesInCart.find((coffee) => coffee.id === id)
 
     if (!coffeeExist) return
 
-    const updatedCoffeesInCart = coffeesInTheCart.filter(
+    const updatedCoffeesInCart = coffeesInCart.filter(
       (coffee) => coffee !== coffeeExist,
     )
 
-    setCoffeesInTheCart(updatedCoffeesInCart)
+    setCoffeesInCart(updatedCoffeesInCart)
   }
 
-  function alterQuantityOfCoffee(id: number, newQuantity: number) {
-    const coffee = coffeesInTheCart.find((coffee) => coffee.id === id)
+  function changeQuantityCoffee(id: number, type: 'increase' | 'decrease') {
+    const coffee = coffeesInCart.find((coffee) => coffee.id === id)
+    if (!coffee) {
+      alert('Café não está no carrinho!')
+      return
+    }
 
-    if (!coffee) return
-
-    const updatedQuantityCoffee = coffeesInTheCart.map((coffee) => {
+    const updatedQuantityCoffee = coffeesInCart.map((coffee) => {
       if (coffee.id === id) {
-        return { ...coffee, quantityOfCoffee: newQuantity }
+        return {
+          ...coffee,
+          quantity:
+            type === 'increase' ? coffee.quantity + 1 : coffee.quantity - 1,
+        }
       } else {
         return coffee
       }
     })
-    setCoffeesInTheCart(updatedQuantityCoffee)
+    setCoffeesInCart(updatedQuantityCoffee)
   }
 
   function counterCoffeesInCart() {
-    const coffeesInCart = coffeesInTheCart.reduce((acc, coffee) => {
-      const quantity = coffee.quantityOfCoffee
+    const counterQuantityCoffee = coffeesInCart.reduce((acc, coffee) => {
+      const quantity = coffee.quantity
       return acc + quantity
     }, 0)
 
-    return coffeesInCart
+    return counterQuantityCoffee
+  }
+
+  function sumPriceTotal() {
+    const priceTotal = coffeesInCart.reduce((acc, coffee) => {
+      const price: number = coffee.price * coffee.quantity
+
+      return acc + price
+    }, 0)
+
+    return priceTotal
   }
 
   return (
     <CoffeesContext.Provider
       value={{
         coffees,
-        addCoffeeInTheCart,
+        coffeesInCart,
+        addCoffeeInCart,
         counterCoffeesInCart,
-        removeCoffeeInTheCart,
-        alterQuantityOfCoffee,
+        removeCoffeeInCart,
+        changeQuantityCoffee,
+        sumPriceTotal,
       }}
     >
       {children}

@@ -3,23 +3,22 @@ import { QuantityCoffeeContainer } from './styles'
 
 interface QuantityCoffeeProps {
   quantity: number
-  onChangeQuantity: (action: 'add' | 'remove') => void
+  onIncrease: () => void
+  onDecrease: () => void
 }
 
 export function QuantityCoffee({
   quantity,
-  onChangeQuantity,
+  onDecrease,
+  onIncrease,
 }: QuantityCoffeeProps) {
   return (
     <QuantityCoffeeContainer>
-      <button
-        disabled={quantity <= 1}
-        onClick={(e) => onChangeQuantity('remove')}
-      >
+      <button disabled={quantity <= 1} onClick={onDecrease}>
         <Minus size={14} weight="fill" />
       </button>
       <span>{quantity}</span>
-      <button onClick={(e) => onChangeQuantity('add')}>
+      <button onClick={onIncrease}>
         <Plus size={14} weight="fill" />
       </button>
     </QuantityCoffeeContainer>

@@ -35,16 +35,15 @@ export function Coffee({
 }: CoffeeProps) {
   const [quantityCoffee, setQuantityCoffee] = useState<number>(1)
 
-  const { addCoffeeInTheCart, removeCoffeeInTheCart } =
-    useContext(CoffeesContext)
+  const { addCoffeeInCart } = useContext(CoffeesContext)
 
-  function handleAlterQuantityCoffee(action: 'remove' | 'add') {
-    if (action === 'remove') {
-      setQuantityCoffee((state) => state - 1)
-    } else {
-      setQuantityCoffee((state) => state + 1)
-    }
+  function handleDecrease() {
+    setQuantityCoffee((state) => state - 1)
   }
+  function handleIncrease() {
+    setQuantityCoffee((state) => state + 1)
+  }
+
   function handleAddCoffeeToCart() {
     const coffee: CoffeeInTheCart = {
       id,
@@ -53,10 +52,10 @@ export function Coffee({
       photo,
       price,
       tags,
-      quantityOfCoffee: quantityCoffee,
+      quantity: quantityCoffee,
     }
 
-    addCoffeeInTheCart(coffee)
+    addCoffeeInCart(coffee)
   }
 
   return (
@@ -77,7 +76,8 @@ export function Coffee({
         <div>
           <QuantityCoffee
             quantity={quantityCoffee}
-            onChangeQuantity={handleAlterQuantityCoffee}
+            onDecrease={handleDecrease}
+            onIncrease={handleIncrease}
           />
 
           <AddCoffeeToCart
@@ -87,9 +87,6 @@ export function Coffee({
             <ShoppingCartSimple size={22} weight="fill" />
           </AddCoffeeToCart>
         </div>
-        <button onClick={() => removeCoffeeInTheCart(id)}>
-          tirar do carrinho
-        </button>
       </CardFooter>
     </CoffeeContainer>
   )
