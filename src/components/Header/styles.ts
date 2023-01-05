@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface CountCoffeesInCart {
   total: number
@@ -44,24 +44,28 @@ export const Cart = styled.button<CountCoffeesInCart>`
 
   position: relative;
 
-  &::after {
-    content: '${(props) => props.total}';
-    position: absolute;
-    min-width: 1.2rem;
-    min-height: 1.25rem;
+  ${(props) =>
+    props.total > 0 &&
+    css`
+      &::after {
+        content: '${props.total}';
+        position: absolute;
+        min-width: 1.2rem;
+        min-height: 1.25rem;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: ${(props) => props.theme['yellow-dark']};
-    color: ${(props) => props.theme.white};
-    border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: ${(props) => props.theme['yellow-dark']};
+        color: ${(props) => props.theme.white};
+        border-radius: 50%;
 
-    top: -8px;
-    right: -8px;
-    z-index: 10;
+        top: -8px;
+        right: -8px;
+        z-index: 10;
 
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+    `}
 `
