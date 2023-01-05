@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import api from '../services/api'
 
 interface Coffee {
@@ -9,15 +9,15 @@ interface Coffee {
   photo: string
   price: number
 }
-export interface CoffeeInTheCart extends Coffee {
+export interface CoffeeInCart extends Coffee {
   quantity: number
 }
 
 interface CoffeesContextType {
   coffees: Coffee[]
-  coffeesInCart: CoffeeInTheCart[]
+  coffeesInCart: CoffeeInCart[]
   counterCoffeesInCart: () => number
-  addCoffeeInCart: (data: CoffeeInTheCart) => void
+  addCoffeeInCart: (data: CoffeeInCart) => void
   removeCoffeeInCart: (id: number) => void
   changeQuantityCoffee: (id: number, type: 'increase' | 'decrease') => void
   sumPriceTotal: () => number
@@ -33,7 +33,17 @@ export function CoffeesContextProvider({
   children,
 }: CoffeesContextProviderProps) {
   const [coffees, setCoffees] = useState<Coffee[]>([])
-  const [coffeesInCart, setCoffeesInCart] = useState<CoffeeInTheCart[]>([])
+  const [coffeesInCart, setCoffeesInCart] = useState<CoffeeInCart[]>(() => {
+    const storageCoffees = localStorage.getItem(
+      'coffeesDelivery:coffees-cart-1.0.0',
+    )
+
+    if (storageCoffees) {
+      return JSON.parse(storageCoffees)
+    }
+
+    return []
+  })
 
   useEffect(() => {
     async function Coffees() {
@@ -43,12 +53,24 @@ export function CoffeesContextProvider({
     Coffees()
   }, [])
 
-  useEffect(() => {
-    const stateJSON = JSON.stringify(coffeesInCart)
-    localStorage.setItem('coffeesDelivery:coffees-cart-1.0.0', stateJSON)
-  }, [coffeesInCart])
+  const prevCoffeesCartRef = useRef<CoffeeInCart[]>()
 
-  function addCoffeeInCart(coffee: CoffeeInTheCart) {
+  useEffect(() => {
+    prevCoffeesCartRef.current = coffeesInCart
+  })
+
+  const coffeesPreviousValue = prevCoffeesCartRef.current ?? coffeesInCart
+
+  useEffect(() => {
+    if (coffeesPreviousValue !== coffeesInCart) {
+      localStorage.setItem(
+        'coffeesDelivery:coffees-cart-1.0.0',
+        JSON.stringify(coffeesInCart),
+      )
+    }
+  }, [coffeesInCart, coffeesPreviousValue])
+
+  function addCoffeeInCart(coffee: CoffeeInCart) {
     const verifyCoffeeAlreadyExistsInCart = coffeesInCart.find(
       (item) => item.id === coffee.id,
     )
