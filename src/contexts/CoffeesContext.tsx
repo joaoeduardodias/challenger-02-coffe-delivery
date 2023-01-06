@@ -21,6 +21,7 @@ interface CoffeesContextType {
   removeCoffeeInCart: (id: number) => void
   changeQuantityCoffee: (id: number, type: 'increase' | 'decrease') => void
   sumPriceTotal: () => number
+  cleanCart: () => void
 }
 
 interface CoffeesContextProviderProps {
@@ -134,6 +135,10 @@ export function CoffeesContextProvider({
     return priceTotal
   }
 
+  function cleanCart() {
+    setCoffeesInCart([])
+  }
+
   return (
     <CoffeesContext.Provider
       value={{
@@ -144,6 +149,7 @@ export function CoffeesContextProvider({
         removeCoffeeInCart,
         changeQuantityCoffee,
         sumPriceTotal,
+        cleanCart,
       }}
     >
       {children}

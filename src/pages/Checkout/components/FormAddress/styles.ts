@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const FormAddressContainer = styled.form`
+export const FormAddressContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@ export const FormAddressContainer = styled.form`
   gap: 1rem;
   margin-top: 2rem;
 
-  div {
+  > div {
     width: 100%;
     display: flex;
     gap: 0.75rem;
@@ -48,4 +48,14 @@ export const TagOptional = styled.span`
   position: absolute;
   right: 1rem;
   top: 13.2px;
+`
+
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.3;
+  position: relative;
+  > p {
+    color: ${({ theme }) => theme['base-error']};
+  }
 `

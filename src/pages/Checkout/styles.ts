@@ -4,7 +4,7 @@ interface ButtonMethodPaymentProps {
   isSelected?: boolean
 }
 
-export const CheckoutContainer = styled.div`
+export const CheckoutContainer = styled.form`
   width: 100%;
   max-width: 1120px;
   margin: 2.5rem auto 0;

@@ -14,11 +14,11 @@ export function QuantityCoffee({
 }: QuantityCoffeeProps) {
   return (
     <QuantityCoffeeContainer>
-      <button disabled={quantity <= 1} onClick={onDecrease}>
+      <button type="button" disabled={quantity <= 1} onClick={onDecrease}>
         <Minus size={14} weight="fill" />
       </button>
       <span>{quantity}</span>
-      <button onClick={onIncrease}>
+      <button type="button" onClick={onIncrease}>
         <Plus size={14} weight="fill" />
       </button>
     </QuantityCoffeeContainer>

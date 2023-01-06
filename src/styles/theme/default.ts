@@ -1,5 +1,6 @@
 export const defaultTheme = {
   white: '#FFF',
+  'base-error': '#f84747',
 
   'base-title': '#272221',
   'base-subtitle': '#403937',

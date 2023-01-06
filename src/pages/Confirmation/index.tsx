@@ -1,5 +1,9 @@
 import { Clock, CurrencyDollar, MapPin } from 'phosphor-react'
+import { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import confirmedOrderIllustration from '../../assets/confirmedOrder.svg'
+import { OrderData } from '../Checkout'
+import { paymentMethods } from '../Checkout/components/PaymentMethodOptions'
 import {
   ConfirmationContainer,
   IconClock,
@@ -9,7 +13,21 @@ import {
   OrderDetailsContainer,
 } from './styles'
 
+interface LocationType {
+  state: OrderData
+}
+
 export function Confirmation() {
+  const { state } = useLocation() as unknown as LocationType
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!state) {
+      navigate('/')
+    }
+  }, [])
+
+  if (!state) return <></>
+
   return (
     <ConfirmationContainer>
       <div>
@@ -25,9 +43,14 @@ export function Confirmation() {
             </IconMap>
             <div>
               <address>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em{' '}
+                <strong>
+                  {state.street}, {state.number}
+                </strong>
               </address>
-              <address>Farrapos - Porto Alegre, RS</address>
+              <address>
+                {state.district} - {state.city}, {state.state}
+              </address>
             </div>
           </InfoWithIcon>
           <InfoWithIcon>
@@ -48,7 +71,7 @@ export function Confirmation() {
             <div>
               <p>Pagamento na entrega</p>
               <p>
-                <strong>Cartão de Crédito</strong>
+                <strong>{paymentMethods[state.paymentMethod].label}</strong>
               </p>
             </div>
           </InfoWithIcon>
