@@ -149,8 +149,11 @@ export const CardValues = styled.div`
     line-height: 160%;
     transition: 0.2s;
 
-    &:hover {
+    &:not(:disabled):hover {
       background: ${(props) => props.theme['yellow-dark']};
+    }
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 `

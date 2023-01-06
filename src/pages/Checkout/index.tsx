@@ -103,7 +103,10 @@ export function Checkout() {
               <strong>Total</strong>
               <strong>R${` ${formatterPrice(totalPrice)}`}</strong>
             </div>
-            <button>Confirmar pedido </button>
+
+            <button disabled={coffeesInCart.length <= 0}>
+              Confirmar pedido
+            </button>
           </CardValues>
         </CartContainer>
       </SectionBase>
